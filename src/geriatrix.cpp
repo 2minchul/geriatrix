@@ -121,16 +121,11 @@ void issueCreate(const char *path, size_t len) {
   fd = g_backend->bd_open(path, O_RDWR|O_CREAT, 0600);
   assert(fd > -1);
   if(len > 0) {
-    do {
-      if(rv < 0) {
-        sleep(1);
-      }
-      rv = g_backend->bd_fallocate(fd, 0, len);
-    } while(rv != 0);
+    rv = g_backend->bd_fallocate(fd, 0, len);
     if(rv != 0) {
       fprintf(stderr,
-          "issueCreate: fallocate(%s): %s with params fd: %d, len:%lu\n",
-          path, strerror(rv), fd, len);
+              "issueCreate: fallocate(%s): %s with params fd: %d, len:%lu\n",
+              path, strerror(rv), fd, len);
       abort();
     }
   }
