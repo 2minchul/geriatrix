@@ -120,6 +120,13 @@ void issueCreate(const char *path, size_t len) {
   int fd, rv = 1;
   fd = g_backend->bd_open(path, O_RDWR|O_CREAT, 0600);
   assert(fd > -1);
+  if(fd < 0) {
+    fprintf(stderr,
+            "issueCreate: open(%s): %s , len:%lu\n",
+            path, strerror(errno), len);
+    abort();
+    return;
+  }
   if(len > 0) {
     rv = g_backend->bd_fallocate(fd, 0, len);
     if(rv != 0) {
