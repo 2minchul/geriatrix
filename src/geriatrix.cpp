@@ -118,7 +118,7 @@ static int mkdir_path(const char *path, mode_t mode) {
 
 void issueCreate(const char *path, size_t len) {
   int fd, rv = 1;
-  fd = g_backend->bd_open(path, O_RDWR|O_CREAT, 0600);
+  fd = g_backend->bd_open(path, O_RDWR|O_CREAT|O_DIRECT, 0600);
   assert(fd > -1);
   if(fd < 0) {
     fprintf(stderr,
