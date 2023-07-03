@@ -128,11 +128,13 @@ void issueCreate(const char *path, size_t len) {
     return;
   }
   if(len > 0) {
-    rv = g_backend->bd_fallocate(fd, 0, len);
-    if(rv != 0) {
+    char *buf = (char *) malloc(len);
+    ssize_t written = g_backend->bd_write(fd, buf, len);
+    free(buf);
+    if(written == -1) {
       fprintf(stderr,
-              "issueCreate: fallocate(%s): %s with params fd: %d, len:%lu\n",
-              path, strerror(rv), fd, len);
+              "issueCreate: write(%s): %s , len:%lu\n",
+              path, strerror(errno), len);
       abort();
     }
   }
