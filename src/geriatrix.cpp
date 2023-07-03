@@ -163,6 +163,7 @@ void issueDelete(const char *path) {
   issueAccess(path);
   rv = g_backend->bd_unlink(path);
   assert(rv == 0);
+  sync();
   return;
 }
 
